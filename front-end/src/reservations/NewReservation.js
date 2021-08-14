@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 
-function NewReservation() {
+//this component is reused for editing reservations.
+
+function NewReservation({ edit, reservations }) {
   const history = useHistory();
+  const { reservation_id } = useParams();
   const [errors, setErrors] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -14,6 +17,28 @@ function NewReservation() {
     reservation_time: "",
     people: 0,
   });
+
+  if (edit) {
+    if (!reservations || !reservation_id) return null;
+
+    // find the corresponding reservation:
+    const foundReservation = reservations.find(
+      (reservation) => reservation.reservation_id === Number(reservation_id)
+    );
+
+    if (!foundReservation || foundReservation.status !== "booked") {
+      return <p>Only booked reservations can be edited.</p>;
+    }
+    setFormData({
+      first_name: foundReservation.first_name,
+      last_name: foundReservation.last_name,
+      mobile_number: foundReservation.mobile_number,
+      reservation_date: foundReservation.reservation_date,
+      reservation_time: foundReservation.reservation_time,
+      people: foundReservation.people,
+      reservation_id: foundReservation.reservation_id,
+    });
+  }
 
   function handleChange({ target }) {
     setFormData({ ...formData, [target.name]: target.value });
@@ -26,30 +51,29 @@ function NewReservation() {
     if (validateDate(errorList) && validateFields(errorList)) {
       history.push(`/dashboard?date=${formData.reservation_date}`);
     }
-     
+
     setErrors(errorList);
   }
 
   //makes sure fields are not empty before submitting reservation
   function validateFields(errorList) {
-    for(let field in formData){
-      if(formData[field] === ""){
-        const fieldName = field.charAt(0).toUpperCase() + field.slice(1).split("_").join(" ");
-        errorList.push({ message: `${fieldName} cannot be left blank.`})
+    for (let field in formData) {
+      if (formData[field] === "") {
+        const fieldName =
+          field.charAt(0).toUpperCase() + field.slice(1).split("_").join(" ");
+        errorList.push({ message: `${fieldName} cannot be left blank.` });
       }
-      
     }
 
-    if(formData.people <= 0) {
-      errorList.push({ message: "Party size must be at least 1 person." })
+    if (formData.people <= 0) {
+      errorList.push({ message: "Party size must be at least 1 person." });
     }
-  
-    if(errorList.length > 0) {
+
+    if (errorList.length > 0) {
       return false;
     }
     return true;
   }
-  
 
   function validateDate(errorList) {
     const reservationDate = new Date(

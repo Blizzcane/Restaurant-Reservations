@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 
 function ReserveSeat({ reservations, tables }) {
   const history = useHistory();
   const [tableId, setTableId] = useState(0);
   const [errors, setErrors] = useState([]);
+  const { reservation_id } = useParams();
 
   if (!tables || !reservations) return null;
 

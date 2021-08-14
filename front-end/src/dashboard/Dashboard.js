@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import ErrorAlert from "../layout/ErrorAlert";
 import { useHistory } from "react-router-dom";
 import { previous, today, next } from "../utils/date-time";
@@ -10,11 +10,16 @@ import TableList from "./TableList";
  * @param date
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
- */ 
+ */
 
-function Dashboard({ date, reservations ,reservationsError, tables,tablesError }) {
+function Dashboard({
+  date,
+  reservations,
+  reservationsError,
+  tables,
+  tablesError,
+}) {
   const history = useHistory();
-  
 
   const reservationsJSX = () => {
     return reservations.map((reservation) => (
@@ -38,7 +43,7 @@ function Dashboard({ date, reservations ,reservationsError, tables,tablesError }
       </div>
       <ErrorAlert error={reservationsError} />
       <table className="table">
-        <thead>
+        <thead class="thead-light">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">First Name</th>
@@ -47,7 +52,9 @@ function Dashboard({ date, reservations ,reservationsError, tables,tablesError }
             <th scope="col">Time</th>
             <th scope="col">People</th>
             <th scope="col">Status</th>
-            <th scope="col">Seat Table</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Cancel</th>
+            <th scope="col">Seat</th>
           </tr>
         </thead>
         <tbody>{reservationsJSX()}</tbody>
