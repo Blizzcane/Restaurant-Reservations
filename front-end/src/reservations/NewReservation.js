@@ -21,27 +21,71 @@ function NewReservation() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (validateDate()) {
-      history.push(`/dashboard?date=${formData.reservation_date}`);
-    }
-  }
-
-  function validateDate() {
-    const reservationDate = new Date(formData.reservation_date);
-    const todaysDate = new Date();
-
     const errorList = [];
 
+    if (validateDate(errorList) && validateFields(errorList)) {
+      history.push(`/dashboard?date=${formData.reservation_date}`);
+    }
+     
+    setErrors(errorList);
+  }
+
+  //makes sure fields are not empty before submitting reservation
+  function validateFields(errorList) {
+    for(let field in formData){
+      if(formData[field] === ""){
+        const fieldName = field.charAt(0).toUpperCase() + field.slice(1).split("_").join(" ");
+        errorList.push({ message: `${fieldName} cannot be left blank.`})
+      }
+      
+    }
+
+    if(formData.people <= 0) {
+      errorList.push({ message: "Party size must be at least 1 person." })
+    }
+  
+    if(errorList.length > 0) {
+      return false;
+    }
+    return true;
+  }
+  
+
+  function validateDate(errorList) {
+    const reservationDate = new Date(
+      `${formData.reservation_date}T${formData.reservation_time}:00.000`
+    );
+    const todaysDate = new Date();
+
     //checks if it's Tuesday
-    if (reservationDate.getDay() === 1) {
+    if (reservationDate.getDay() === 2) {
       errorList.push({ message: "The restaurant is closed on Tuesday!" });
     }
     //checks if date is in the past
     if (reservationDate < todaysDate) {
       errorList.push({ message: "Reservations cannot be made in the past." });
     }
-    console.log(errorList);
-    setErrors(errorList);
+
+    //checks if the time is before 10:30am opening
+    if (
+      reservationDate.getHours() < 10 ||
+      (reservationDate.getHours() === 10 && reservationDate.getMinutes() < 30)
+    ) {
+      errorList.push({ message: "Restaurant is not open until 10:30AM." });
+    } else if (
+      reservationDate.getHours() > 22 ||
+      (reservationDate.getHours() === 22 && reservationDate.getMinutes() >= 30)
+    ) {
+      errorList.push({ message: "Restaurant is closed after 10:30PM." });
+    } else if (
+      reservationDate.getHours() > 21 ||
+      (reservationDate.getHours() === 21 && reservationDate.getMinutes() > 30)
+    ) {
+      errorList.push({
+        message:
+          "Reservation must be made at least an hour before closing (10:30PM).",
+      });
+    }
 
     if (errorList.length > 0) {
       return false;
@@ -50,6 +94,7 @@ function NewReservation() {
     return true;
   }
 
+  //maps the list of errors from validate
   const displayErrors = () => {
     return errors.map((err, idx) => <ErrorAlert key={idx} error={err} />);
   };
