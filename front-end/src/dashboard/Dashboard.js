@@ -43,7 +43,7 @@ function Dashboard({
       </div>
       <ErrorAlert error={reservationsError} />
       <table className="table">
-        <thead class="thead-light">
+        <thead className="thead-light">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">First Name</th>
@@ -65,7 +65,7 @@ function Dashboard({
       </div>
       <ErrorAlert error={tablesError} />
 
-      <table class="table">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -77,7 +77,7 @@ function Dashboard({
 
         <tbody>{tablesJSX()}</tbody>
       </table>
-      {JSON.stringify(reservations)}
+
       <button
         type="button"
         onClick={() => history.push(`/dashboard?date=${previous(date)}`)}

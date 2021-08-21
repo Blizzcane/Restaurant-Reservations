@@ -57,8 +57,8 @@ function Search() {
         </button>
       </form>
 
-      <table class="table">
-        <thead class="thead-light">
+      <table className="table">
+        <thead className="thead-light">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">First Name</th>

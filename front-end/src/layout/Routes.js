@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import Dashboard from "../dashboard/Dashboard";
 import NewReservation from "../reservations/NewReservation";
 import NotFound from "./NotFound";
@@ -31,12 +31,17 @@ function Routes() {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
+    setTablesError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+    
+    listTables(abortController.signal).then(setTables).then(() =>{
+      console.log(tables);
+    }).catch(setTablesError);
     return () => abortController.abort();
-  }
-
+  } 
+  
   return (
     <Switch>
       <Route exact={true} path="/">

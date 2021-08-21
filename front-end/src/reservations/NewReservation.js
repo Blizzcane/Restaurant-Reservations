@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
+import { createReservation } from "../utils/api";
 
 //this component is reused for editing reservations.
 
@@ -8,6 +9,7 @@ function NewReservation({ edit, reservations }) {
   const history = useHistory();
   const { reservation_id } = useParams();
   const [errors, setErrors] = useState([]);
+  const [apiError, setApiError] = useState(null);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -46,10 +48,16 @@ function NewReservation({ edit, reservations }) {
 
   function handleSubmit(event) {
     event.preventDefault();
+    const abortController = new AbortController();
+
     const errorList = [];
 
     if (validateDate(errorList) && validateFields(errorList)) {
-      history.push(`/dashboard?date=${formData.reservation_date}`);
+      createReservation(formData, abortController.signal)
+        .then(() => {
+          history.push(`/dashboard?date=${formData.reservation_date}`);
+        })
+        .catch(setApiError);
     }
 
     setErrors(errorList);
@@ -122,10 +130,15 @@ function NewReservation({ edit, reservations }) {
   const displayErrors = () => {
     return errors.map((err, idx) => <ErrorAlert key={idx} error={err} />);
   };
+  const displayApiErrors = () => {
+    if( apiError === null) return null;
+    return apiError.map((err, idx) => <ErrorAlert key={idx} error={err} />);
+  };
 
   return (
     <form>
       {displayErrors()}
+      {displayApiErrors()}
 
       <label htmlFor="first_name">First Name:&nbsp;</label>
 
