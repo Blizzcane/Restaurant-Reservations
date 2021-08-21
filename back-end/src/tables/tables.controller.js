@@ -19,12 +19,9 @@ function validateBody(req, res, next) {
     if(!req.body.data.capacity || req.body.data.capacity === "") {
         return next({ status: 400, message: "'capacity' field cannot be empty" });
     }
+ 
 
-    if(typeof req.body.data.capacity !== "number") {
-		return next({ status: 400, message: "'capacity' field must be a number" });
-	}
-
-	if(req.body.data.capacity < 1) {
+	if(parseInt(req.body.data.capacity) < 1) {
 		return next({ status: 400, message: "'capacity' field must be at least 1" });
 	}
 

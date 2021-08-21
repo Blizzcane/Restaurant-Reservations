@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
+import {createTable} from "../utils/api";
 
-function NewTable() {
+function NewTable({ loadDashboard }) {
   const history = useHistory();
 
   const [error, setError] = useState(null);
@@ -17,9 +18,13 @@ function NewTable() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
+    const abortController = new AbortController();
+ 
     if (validateFields()) { 
-        history.push(`/dashboard`);
+      createTable(formData, abortController.signal)
+        .then(loadDashboard)
+        .then(() => history.push(`/dashboard`))
+        .catch(setError);
     }
   }
 
@@ -31,12 +36,10 @@ function NewTable() {
     } else if (formData.table_name.length < 2) {
       foundError = { message: "Table name must be at least 2 characters." };
     }
+ 
+    setError(foundError);  
 
-    console.log("before:",foundError);
-    setError(foundError);
-    console.log("after:", error);
-
-    return foundError !== null;
+    return foundError === null;
   }
 
   return (

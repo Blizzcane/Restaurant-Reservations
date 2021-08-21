@@ -20,11 +20,11 @@ import Search from "../search/Search";
  */
 function Routes() {
   const query = useQuery();
-  const date = query.get("date");
+  const date = query.get("date") ? query.get("date") : today();
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
-  const [tablesError, setTablesError] = useState(null);
+  const [tablesError, setTablesError] = useState(null); 
 
   useEffect(loadDashboard, [date]);
 
@@ -35,13 +35,16 @@ function Routes() {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-    
-    listTables(abortController.signal).then(setTables).then(() =>{
-      console.log(tables);
-    }).catch(setTablesError);
+
+    listTables(abortController.signal)
+      .then((tables) =>
+        tables.sort((tableA, tableB) => tableA.table_name - tableB.table_name)
+      )
+      .then(setTables)
+      .catch(setTablesError);
     return () => abortController.abort();
-  } 
-  
+  }
+
   return (
     <Switch>
       <Route exact={true} path="/">
@@ -53,7 +56,7 @@ function Routes() {
       </Route>
 
       <Route path="/reservations/:reservation_id/edit">
-        <NewReservation edit={true} reservations={reservations} />
+        <NewReservation edit={true} reservations={reservations} loadDashboard={loadDashboard}/>
       </Route>
 
       <Route path="/reservations/:reservation_id/seat">
@@ -65,7 +68,7 @@ function Routes() {
       </Route>
 
       <Route exact={true} path="/tables/new">
-        <NewTable />
+        <NewTable loadDashboard={loadDashboard} />
       </Route>
 
       <Route path="/search">
@@ -74,7 +77,7 @@ function Routes() {
 
       <Route path="/dashboard">
         <Dashboard
-          date={date ? date : today()}
+          date={date}
           reservations={reservations}
           reservationsError={reservationsError}
           tables={tables}

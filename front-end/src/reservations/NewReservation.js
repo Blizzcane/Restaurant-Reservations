@@ -5,7 +5,7 @@ import { createReservation } from "../utils/api";
 
 //this component is reused for editing reservations.
 
-function NewReservation({ edit, reservations }) {
+function NewReservation({ edit, reservations, loadDashboard }) {
   const history = useHistory();
   const { reservation_id } = useParams();
   const [errors, setErrors] = useState([]);
@@ -53,7 +53,7 @@ function NewReservation({ edit, reservations }) {
     const errorList = [];
 
     if (validateDate(errorList) && validateFields(errorList)) {
-      createReservation(formData, abortController.signal)
+      createReservation(formData, abortController.signal).then(loadDashboard)
         .then(() => {
           history.push(`/dashboard?date=${formData.reservation_date}`);
         })
