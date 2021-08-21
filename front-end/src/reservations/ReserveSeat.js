@@ -1,30 +1,37 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router";
+import ErrorAlert from "../layout/ErrorAlert";
+import { updateTable } from "../utils/api";
 
 function ReserveSeat({ reservations, tables }) {
   const history = useHistory();
-  const [tableId, setTableId] = useState(0);
+  const [tableId, setTableId] = useState(1);
   const [errors, setErrors] = useState([]);
   const { reservation_id } = useParams();
+  const reservationId = parseInt(reservation_id);
 
   if (!tables || !reservations) return null;
 
-  function handleChange({ target }) {
-    setTableId(target.value);
+  function handleChange({ target }) { 
+    setTableId(parseInt(target.value));
   }
 
   function handleSubmit(event) {
-    event.preventDefault();
-
+    event.preventDefault(); 
     if (validateSeat()) {
+      // console.log("validated"); 
+      const foundTable = tables.find((table) => table.table_id === tableId);
+      foundTable.reservation_id = reservation_id;
+      updateTable(foundTable);
       history.push(`/dashboard`);
     }
   }
 
   const tableOptionsJSX = () => {
-    return tables.map((table) => (
-      <option value={table.table_id}>
-        {table.table_name} - {table.capacity}
+    return tables.map((table, idx) => (
+      <option value={table.table_id} key={idx}>
+        {table.table_name} - {table.capacity}{" "}
+        {table.capacity > 1 ? "people" : "person"}
       </option>
     ));
   };
@@ -33,9 +40,9 @@ function ReserveSeat({ reservations, tables }) {
 
     const foundTable = tables.find((table) => table.table_id === tableId);
     const foundReservation = reservations.find(
-      (reservation) => reservation.reservation_id === reservation_id
+      (reservation) => reservation.reservation_id === reservationId
     );
-
+    
     if (!foundTable) {
       foundErrors.push("The table does not exist.");
     } else if (!foundReservation) {
@@ -51,7 +58,7 @@ function ReserveSeat({ reservations, tables }) {
         );
       }
     }
-
+    console.log(foundErrors);
     setErrors(foundErrors);
 
     return foundErrors.length === 0;

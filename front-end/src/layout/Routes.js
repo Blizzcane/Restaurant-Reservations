@@ -38,7 +38,7 @@ function Routes() {
 
     listTables(abortController.signal)
       .then((tables) =>
-        tables.sort((tableA, tableB) => tableA.table_name - tableB.table_name)
+        tables.sort((a, b) => a.table_name - b.table_name)
       )
       .then(setTables)
       .catch(setTablesError);
