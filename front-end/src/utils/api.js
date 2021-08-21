@@ -96,7 +96,7 @@ export async function updateTable(table, signal) {
   
   const url = `${API_BASE_URL}/tables/${table.table_id}/seat`;
 
-  const body = JSON.stringify({ data: table.reservation_id }); 
+  const body = JSON.stringify({ data: table }); 
 
   return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
 }
