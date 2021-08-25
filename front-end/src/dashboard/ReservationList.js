@@ -25,13 +25,14 @@ function ReservationList({ reservation }) {
 
       <td>
         <a href={`/reservations/${reservation.reservation_id}/edit`}>
-          <button type="button">Edit</button>
+          <button className="btn btn-primary" type="button">Edit</button>
         </a>
       </td>
 
       <td>
         <button
           type="button"
+          className="btn btn-danger"
           onClick={handleCancel}
           data-reservation-id-cancel={reservation.reservation_id}
         >
@@ -42,7 +43,7 @@ function ReservationList({ reservation }) {
       {reservation.status === "booked" && (
         <td>
           <a href={`/reservations/${reservation.reservation_id}/seat`}>
-            <button type="button">Seat</button>
+            <button type="button" className="btn btn-success">Seat</button>
           </a>
         </td>
       )}

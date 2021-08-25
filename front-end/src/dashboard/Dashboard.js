@@ -42,8 +42,8 @@ function Dashboard({
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <table className="table">
-        <thead className="thead-light">
+      <table className="table table-hover " >
+        <thead  >
           <tr>
             <th scope="col">ID</th>
             <th scope="col">First Name</th>

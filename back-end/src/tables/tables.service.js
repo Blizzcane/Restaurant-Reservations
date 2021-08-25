@@ -9,6 +9,8 @@ function create(table) {
 }
 
 function seat(table_id, reservation_id) {
+  console.log("seating knex");
+
   return knex("tables")
     .where({ table_id: table_id })
     .update({ reservation_id: reservation_id, status: "occupied" });

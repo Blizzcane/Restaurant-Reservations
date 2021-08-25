@@ -14,6 +14,7 @@ function ReserveSeat({ loadDashboard, tables }) {
 
   const [reservations, setReservations] = useState([]);
 
+  //load all of the reservations
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -54,6 +55,7 @@ function ReserveSeat({ loadDashboard, tables }) {
       </option>
     ));
   };
+
   function validateSeat() {
     const foundErrors = [];
     const foundTable = tables.find(
@@ -87,15 +89,21 @@ function ReserveSeat({ loadDashboard, tables }) {
   }
 
   const errorsJSX = () => {
-    return errors.map((error, idx) => <ErrorAlert key={idx} error={error} />);
+    return errors.map((error, idx) => {
+    const message = {
+      "message" : error
+    }
+    return <ErrorAlert key={idx} error={message} />});
   };
 
   return (
     <form>
       {errorsJSX()} 
-      
+
       <label htmlFor="table_id">Choose table:</label>
       <select
+      				className="form-control m-1"
+
         name="table_id"
         id="table_id"
         value={table_id}
@@ -103,10 +111,10 @@ function ReserveSeat({ loadDashboard, tables }) {
       >
         {tableOptionsJSX()}
       </select>
-      <button type="submit" onClick={handleSubmit}>
+      <button className="btn btn-primary m-1" type="submit" onClick={handleSubmit}>
         Submit
       </button>
-      <button type="button" onClick={history.goBack}>
+      <button className="btn btn-danger m-1" type="button" onClick={history.goBack}>
         Cancel
       </button>
     </form>

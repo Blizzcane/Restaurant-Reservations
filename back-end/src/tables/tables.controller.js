@@ -8,6 +8,8 @@ async function list(req, res) {
 }
 
 function validateBody(req, res, next) {
+  console.log("checking body");
+
   if (!req.body.data.table_name || req.body.data.table_name === "") {
     return next({ status: 400, message: "'table_name' field cannot be empty" });
   }
@@ -42,6 +44,8 @@ async function create(req, res) {
 }
 
 async function validateTableId(req, res, next) {
+  console.log("checking Table ID validity");
+
   const { table_id } = req.params;
   const table = await service.read(table_id);
 
@@ -58,6 +62,8 @@ async function validateTableId(req, res, next) {
 }
 
 async function validateReservationId(req, res, next) {
+  console.log("checking reservation ID validity");
+
   const { reservation_id } = req.body.data;
 
   if (!reservation_id) {
@@ -82,6 +88,7 @@ async function validateReservationId(req, res, next) {
 }
 
 async function validateSeat(req, res, next) {
+  console.log("checking seat validity");
   if (res.locals.table.status === "occupied") {
     return next({
       status: 400,
@@ -107,6 +114,7 @@ async function validateSeat(req, res, next) {
 }
 
 async function update(req, res) {
+  console.log("updating tables");
   await service.seat(
     res.locals.table.table_id,
     res.locals.reservation.reservation_id
