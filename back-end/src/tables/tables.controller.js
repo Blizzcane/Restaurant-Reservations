@@ -107,7 +107,16 @@ async function validateSeat(req, res, next) {
 }
 
 async function update(req, res) {
-  req.body.data;
+  await service.seat(
+    res.locals.table.table_id,
+    res.locals.reservation.reservation_id
+  );
+  await service.updateReservation(
+    res.locals.reservation.reservation_id,
+    "seated"
+  );
+
+  res.status(200).json({ data: { status: "seated" } });
 }
 
 module.exports = {

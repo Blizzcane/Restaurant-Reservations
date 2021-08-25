@@ -8,14 +8,21 @@ function create(table) {
   return knex("tables").insert(table).returning("*");
 }
 
-function update(table) {
+function seat(table_id, reservation_id) {
   return knex("tables")
-    .where({ table_id: table.table_id })
-    .update({ reservation_id: table.reservation_id, status: "occupied" });
+    .where({ table_id: table_id })
+    .update({ reservation_id: reservation_id, status: "occupied" });
+}
+
+function updateReservation(reservation_id, status) {
+  return knex("reservations")
+    .where({ reservation_id: reservation_id })
+    .update({ status: status });
 }
 
 module.exports = {
   list,
   create,
-  update,
+  seat,
+  updateReservation,
 };

@@ -42,6 +42,7 @@ function Routes() {
       )
       .then(setTables)
       .catch(setTablesError);
+ 
     return () => abortController.abort();
   }
 
@@ -60,7 +61,7 @@ function Routes() {
       </Route>
 
       <Route path="/reservations/:reservation_id/seat">
-        <ReserveSeat reservations={reservations} tables={tables} />
+        <ReserveSeat loadDashboard ={loadDashboard } tables={tables} />
       </Route>
 
       <Route exact={true} path="/reservations">
