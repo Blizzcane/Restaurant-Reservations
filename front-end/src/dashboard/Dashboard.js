@@ -2,7 +2,7 @@ import React from "react";
 import ErrorAlert from "../layout/ErrorAlert";
 import { useHistory } from "react-router-dom";
 import { previous, today, next } from "../utils/date-time";
-import ReservationList from "./ReservationList";
+import ReservationRow from "./ReservationRow";
 import TableList from "./TableList";
 
 /**
@@ -18,14 +18,16 @@ function Dashboard({
   reservationsError,
   tables,
   tablesError,
+  loadDashboard
 }) {
   const history = useHistory();
 
   const reservationsJSX = () => {
     return reservations.map((reservation) => (
-      <ReservationList
+      <ReservationRow
         key={reservation.reservation_id}
         reservation={reservation}
+        loadDashboard ={loadDashboard}
       />
     ));
   };

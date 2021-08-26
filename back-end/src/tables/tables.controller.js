@@ -127,6 +127,14 @@ async function update(req, res) {
   res.status(200).json({ data: { status: "seated" } });
 }
 
+async function validateData(req, res, next) {
+	if(!req.body.data) {
+		return next({ status: 400, message: "Body must include a data object" });
+	}
+
+	next();
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [validateBody, asyncErrorBoundary(create)],

@@ -1,15 +1,19 @@
 import React from "react";
+import { updateReservationStatus } from "../utils/api";
 
-function ReservationList({ reservation }) {
+function ReservationRow({ reservation, loadDashboard  }) {
   if (!reservation || reservation.status === "finished") return null;
 
   function handleCancel() {
-    if(window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
-      // api call will go here eventually
-  
-      window.location.reload(); 
-    }
-  }
+		if(window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
+			const abortController = new AbortController();
+
+			updateReservationStatus(reservation.reservation_id, "cancelled", abortController.status)
+				.then(loadDashboard);
+
+			return () => abortController.abort();
+		}
+	}
 
   return (
     <tr>
@@ -51,4 +55,4 @@ function ReservationList({ reservation }) {
   );
 }
 
-export default ReservationList;
+export default ReservationRow;

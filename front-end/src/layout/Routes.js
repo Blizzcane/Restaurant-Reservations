@@ -83,6 +83,7 @@ function Routes() {
           reservationsError={reservationsError}
           tables={tables}
           tablesError={tablesError}
+          loadDashboard={loadDashboard}
         />
       </Route>
 
