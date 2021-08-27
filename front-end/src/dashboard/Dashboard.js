@@ -3,7 +3,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { useHistory } from "react-router-dom";
 import { previous, today, next } from "../utils/date-time";
 import ReservationRow from "./ReservationRow";
-import TableList from "./TableList";
+import TableRow from "./TableRow";
 
 /**
  * Defines the dashboard page.
@@ -33,7 +33,7 @@ function Dashboard({
   };
   const tablesJSX = () => {
     return tables.map((table) => (
-      <TableList key={table.table_id} table={table} />
+      <TableRow key={table.table_id} loadDashboard ={loadDashboard} table={table} />
     ));
   };
 

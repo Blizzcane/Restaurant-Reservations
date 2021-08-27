@@ -8,7 +8,7 @@ async function list(req, res) {
 }
 
 function validateBody(req, res, next) {
-  console.log("checking body");
+  // console.log("checking body");
 
   if (!req.body.data.table_name || req.body.data.table_name === "") {
     return next({ status: 400, message: "'table_name' field cannot be empty" });
@@ -44,11 +44,11 @@ async function create(req, res) {
 }
 
 async function validateTableId(req, res, next) {
-  console.log("checking Table ID validity");
+  // console.log("checking Table ID validity");
 
   const { table_id } = req.params;
   const table = await service.read(table_id);
-  console.log("table",table);
+  // console.log("table", table);
 
   if (!table) {
     return next({
@@ -58,17 +58,16 @@ async function validateTableId(req, res, next) {
   }
 
   res.locals.table = table;
-  res.locals.table_id = table_id; 
+  res.locals.table_id = table_id;
 
   next();
 }
 
 async function validateReservationId(req, res, next) {
-  console.log("checking reservation ID validity");
+  // console.log("checking reservation ID validity");
 
   const { reservation_id } = req.body.data;
   const reservation = await service.read(Number(reservation_id));
-
 
   if (!reservation_id) {
     return next({
@@ -76,7 +75,7 @@ async function validateReservationId(req, res, next) {
       message: `reservation_id field is missing from the body`,
     });
   }
- 
+
   if (!reservation) {
     return next({
       status: 404,
@@ -90,7 +89,7 @@ async function validateReservationId(req, res, next) {
 }
 
 async function validateSeat(req, res, next) {
-  console.log("checking seat validity");
+  // console.log("checking seat validity");
   if (res.locals.table.status === "occupied") {
     return next({
       status: 400,
@@ -116,8 +115,8 @@ async function validateSeat(req, res, next) {
 }
 
 async function update(req, res) {
-  console.log("updating tables");
-  console.log("table_id",res.locals.table_id);
+  // console.log("updating tables");
+  // console.log("table_id", res.locals.table_id);
   await service.seat(
     res.locals.table_id,
     res.locals.reservation.reservation_id
@@ -138,6 +137,21 @@ async function validateData(req, res, next) {
   next();
 }
 
+async function validateSeatedTable(req, res, next) {
+  if (res.locals.table.status !== "occupied") {
+    return next({ status: 400, message: "this table is not occupied" });
+  }
+
+  next();
+}
+
+async function destroy(req, res) {
+  await service.updateReservation(res.locals.table.reservation_id, "finished");
+  await service.cleanTable(res.locals.table.table_id);
+
+  res.status(200).json({ data: { status: "finished" } });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [validateBody, asyncErrorBoundary(create)],
@@ -147,5 +161,10 @@ module.exports = {
     asyncErrorBoundary(validateReservationId),
     asyncErrorBoundary(validateSeat),
     asyncErrorBoundary(update),
+  ],
+  destroy: [
+    asyncErrorBoundary(validateTableId),
+    asyncErrorBoundary(validateSeatedTable),
+    asyncErrorBoundary(destroy),
   ],
 };

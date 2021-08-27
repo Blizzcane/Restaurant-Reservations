@@ -29,10 +29,17 @@ function updateReservation(reservation_id, status) {
     .update({ status: status });
 }
 
+function cleanTable(table_id) {
+  return knex("tables")
+      .where({ table_id: table_id })
+      .update({ reservation_id: null, status: "free" });
+}
+
 module.exports = {
   list,
   create,
   seat,
   updateReservation,
-  read
+  read,
+  cleanTable
 };
