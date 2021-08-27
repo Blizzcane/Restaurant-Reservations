@@ -30,19 +30,19 @@ headers.append("Content-Type", "application/json");
  *  If the response is not in the 200 - 399 range the promise is rejected.
  */
 async function fetchJson(url, options, onCancel) {
-  try { 
-    const response = await fetch(url, options);   
-    if (response.status === 204) { 
+  try {
+    const response = await fetch(url, options);
+    if (response.status === 204) {
       return null;
-    }  
-    const payload = await response.json(); 
+    }
+    const payload = await response.json();
 
-    if (payload.error) { 
+    if (payload.error) {
       return Promise.reject({ message: payload.error });
-    } 
+    }
     return payload.data;
   } catch (error) {
-    if (error.name !== "AbortError") { 
+    if (error.name !== "AbortError") {
       console.error(error.stack);
       throw error;
     }
@@ -57,17 +57,24 @@ async function fetchJson(url, options, onCancel) {
  */
 
 export async function listReservations(params, signal) {
-  const url = new URL(`${API_BASE_URL}/reservations`); 
-  
-  if(params) {
-    Object.entries(params).forEach(([key, value]) =>
-      {  
-        url.searchParams.append(key, value.toString())}
-    );
+  const url = new URL(`${API_BASE_URL}/reservations`);
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value.toString());
+    });
   }
-  return await fetchJson(url, { headers, signal, method: "GET"  }, [])
+  return await fetchJson(url, { headers, signal, method: "GET" }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+}
+
+export async function editReservation(reservation_id, reservation, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+
+  const body = JSON.stringify({ data: reservation });
+
+  return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
 }
 
 export async function createReservation(reservation, signal) {
@@ -81,7 +88,7 @@ export async function createReservation(reservation, signal) {
 export async function updateReservationStatus(reservation_id, status, signal) {
   const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
 
-  const body = JSON.stringify({ data: { status: status }});
+  const body = JSON.stringify({ data: { status: status } });
 
   return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
 }
@@ -100,11 +107,9 @@ export async function createTable(table, signal) {
   return await fetchJson(url, { headers, signal, method: "POST", body }, []);
 }
 
-export async function seatTable(reservation_id, table_id, signal) {  
-
+export async function seatTable(reservation_id, table_id, signal) { 
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
 
   const body = JSON.stringify({ data: { reservation_id: reservation_id } }); 
-
   return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
 }

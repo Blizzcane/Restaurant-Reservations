@@ -42,7 +42,7 @@ function Routes() {
       )
       .then(setTables)
       .catch(setTablesError);
- 
+      
     return () => abortController.abort();
   }
 

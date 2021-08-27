@@ -30,8 +30,7 @@ function Search() {
     event.preventDefault();
     const abortController = new AbortController();
     setError(null); 
-    if (validateNumber(mobileNumber)) {
-      
+    if (validateNumber(mobileNumber)) { 
       listReservations({ mobile_number: mobileNumber }, abortController.signal)
         .then(setReservations)
         .catch(setError);

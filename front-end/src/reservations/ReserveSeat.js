@@ -6,13 +6,13 @@ import { listReservations, seatTable } from "../utils/api";
 function ReserveSeat({ loadDashboard, tables }) {
   const history = useHistory();
   const [table_id, setTableId] = useState(1);
+  const [reservations, setReservations] = useState([]);
   const [errors, setErrors] = useState([]);
   const [apiError, setApiError] = useState(null);
   const [reservationsError, setReservationsError] = useState(null);
 
   const { reservation_id } = useParams();
 
-  const [reservations, setReservations] = useState([]);
 
   //load all of the reservations
   useEffect(() => {
@@ -99,7 +99,8 @@ function ReserveSeat({ loadDashboard, tables }) {
   return (
     <form>
       {errorsJSX()} 
-
+      <ErrorAlert error={apiError} />
+			<ErrorAlert error={reservationsError} />
       <label htmlFor="table_id">Choose table:</label>
       <select
       				className="form-control m-1"
