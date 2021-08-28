@@ -184,7 +184,7 @@ function NewReservation({ edit, reservations, loadDashboard }) {
   };
 
   return (
-    <form>
+    <form className="m-2">
       {displayErrors()}
       {displayApiErrors()}
       <ErrorAlert
@@ -201,9 +201,9 @@ function NewReservation({ edit, reservations, loadDashboard }) {
             id="first_name"
             type="text"
             className="form-control"
-            onChange={handleChange} // will add this in soon!
-            value={formData.first_name} // this as well!
-            required // this will make the field non-nullable
+            onChange={handleChange}  
+            value={formData.first_name}  
+            required  
           />
         </div>
       </div>

@@ -54,10 +54,10 @@ function Search() {
 
   return (
     <div>
-      <form>
+      <form className="m-1 form-inline">
         <ErrorAlert error={error} />
 
-        <label className="m-1" htmlFor="mobile_number">
+        <label htmlFor="mobile_number">
           Enter customer's phone number:&nbsp;
         </label>
         <input
@@ -67,17 +67,18 @@ function Search() {
           onChange={handleChange}
           value={mobileNumber}
           placeholder="(000)-000-0000"
-          className="m-1"
+          className="form-control mr-sm-2 "
           required
         />
 
-        <button className="btn btn-outline-primary m-1" type="submit" onClick={handleSubmit}>
+        <button className="btn btn-outline-primary my-2 my-sm-0" type="submit" onClick={handleSubmit}>
           Find
         </button>
       </form>
+      
 
       <table className="table">
-        <thead className="thead-light">
+        <thead className="shadow-sm">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">First Name</th>

@@ -43,7 +43,7 @@ function NewTable({ loadDashboard }) {
   }
 
   return (
-    <form>
+    <form className="m-2">
       <ErrorAlert error={error} />
       <div class="form-group">
         <label htmlFor="table_name">Table Name:&nbsp;</label>

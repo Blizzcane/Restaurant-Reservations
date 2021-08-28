@@ -77,7 +77,7 @@ function Dashboard({
       </div>
       <ErrorAlert error={reservationsError} />
       <table className="table table-hover ">
-        <thead>
+        <thead className="shadow-sm">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">First Name</th>
@@ -100,7 +100,7 @@ function Dashboard({
       <ErrorAlert error={tablesError} />
 
       <table className="table">
-        <thead>
+        <thead className="shadow-sm">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Table Name</th>
