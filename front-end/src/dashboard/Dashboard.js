@@ -18,7 +18,7 @@ function Dashboard({
   reservationsError,
   tables,
   tablesError,
-  loadDashboard
+  loadDashboard,
 }) {
   const history = useHistory();
 
@@ -27,25 +27,35 @@ function Dashboard({
       <ReservationRow
         key={reservation.reservation_id}
         reservation={reservation}
-        loadDashboard ={loadDashboard}
+        loadDashboard={loadDashboard}
       />
     ));
   };
   const tablesJSX = () => {
     return tables.map((table) => (
-      <TableRow key={table.table_id} loadDashboard ={loadDashboard} table={table} />
+      <TableRow
+        key={table.table_id}
+        loadDashboard={loadDashboard}
+        table={table}
+      />
     ));
+  };
+//change the date to US friendly
+  const formatDate = (date) => {
+    let splitDate = date.split("-");
+    console.log(splitDate);
+    return `${splitDate[1]}/${splitDate[2]}/${splitDate[0]}` 
   };
 
   return (
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
+        <h4 className="mb-0">Reservations for {formatDate(date)}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <table className="table table-hover " >
-        <thead  >
+      <table className="table table-hover ">
+        <thead>
           <tr>
             <th scope="col">ID</th>
             <th scope="col">First Name</th>

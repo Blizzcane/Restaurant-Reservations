@@ -183,7 +183,7 @@ function NewReservation({ edit, reservations, loadDashboard }) {
     <form>
       {displayErrors()}
       {displayApiErrors()}
-
+      <ErrorAlert error={reservationsError} />
       <label htmlFor="first_name">First Name:&nbsp;</label>
 
       <input

@@ -1,22 +1,22 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import { cleanTable } from "../utils/api";
 
-function TableRow({ table, loadDashboard  }) {
-  const history = useHistory();
-
+function TableRow({ table, loadDashboard }) {
   if (!table) return null;
 
   function handleFinish() {
-		if(window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
-			const abortController = new AbortController();
+    if (
+      window.confirm(
+        "Is this table ready to seat new guests? This cannot be undone."
+      )
+    ) {
+      const abortController = new AbortController();
 
-			cleanTable(table.table_id, abortController.signal)
-				.then(loadDashboard);
+      cleanTable(table.table_id, abortController.signal).then(loadDashboard);
 
-			return () => abortController.abort();
-		}
-	}
+      return () => abortController.abort();
+    }
+  }
 
   return (
     <tr>
