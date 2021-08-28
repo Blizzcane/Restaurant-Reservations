@@ -40,16 +40,38 @@ function Dashboard({
       />
     ));
   };
-//change the date to US friendly
+  //change the date to US friendly
   const formatDate = (date) => {
     let splitDate = date.split("-");
     console.log(splitDate);
-    return `${splitDate[1]}/${splitDate[2]}/${splitDate[0]}` 
+    return `${splitDate[1]}/${splitDate[2]}/${splitDate[0]}`;
   };
 
   return (
     <main>
-      <h1>Dashboard</h1>
+      <h1>Dashboard</h1><div className="btn-group m-1" role="group">
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
+        >
+          Prev.
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => history.push(`/dashboard?date=${today()}`)}
+        >
+          Today
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => history.push(`/dashboard?date=${next(date)}`)}
+        >
+          Next
+        </button>
+      </div>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {formatDate(date)}</h4>
       </div>
@@ -90,24 +112,7 @@ function Dashboard({
         <tbody>{tablesJSX()}</tbody>
       </table>
 
-      <button
-        type="button"
-        onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
-      >
-        Previous
-      </button>
-      <button
-        type="button"
-        onClick={() => history.push(`/dashboard?date=${today()}`)}
-      >
-        Today
-      </button>
-      <button
-        type="button"
-        onClick={() => history.push(`/dashboard?date=${next(date)}`)}
-      >
-        Next
-      </button>
+      
     </main>
   );
 }

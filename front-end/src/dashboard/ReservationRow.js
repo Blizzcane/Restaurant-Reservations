@@ -15,13 +15,19 @@ function ReservationRow({ reservation, loadDashboard  }) {
 		}
 	}
 
+  const timeFormatter = (time) => {
+    time = time.split(':');
+    if( Number(time[0]) === 12 ) return `12:00 p.m.`;
+    return (Number(time[0]) > 12 ? `${time[0]-12}:${time[1]} p.m.` : `${time[0]}:${time[1]} a.m.` );
+  } 
+
   return (
     <tr>
       <th scope="row">{reservation.reservation_id}</th>
       <td>{reservation.first_name}</td>
       <td>{reservation.last_name}</td>
       <td>{reservation.mobile_number}</td>
-      <td>{reservation.reservation_time}</td>
+      <td>{timeFormatter(reservation.reservation_time)}</td>
       <td>{reservation.people}</td>
       <td data-reservation-id-status={reservation.reservation_id}>
         {reservation.status}
@@ -29,14 +35,14 @@ function ReservationRow({ reservation, loadDashboard  }) {
 
       <td>
         <a href={`/reservations/${reservation.reservation_id}/edit`}>
-          <button className="btn btn-primary" type="button">Edit</button>
+          <button className="btn btn-outline-primary" type="button">Edit</button>
         </a>
       </td>
 
       <td>
         <button
           type="button"
-          className="btn btn-danger"
+          className="btn btn-outline-danger"
           onClick={handleCancel}
           data-reservation-id-cancel={reservation.reservation_id}
         >
@@ -47,7 +53,7 @@ function ReservationRow({ reservation, loadDashboard  }) {
       {reservation.status === "booked" && (
         <td>
           <a href={`/reservations/${reservation.reservation_id}/seat`}>
-            <button type="button" className="btn btn-success">Seat</button>
+            <button type="button" className="btn btn-outline-success">Seat</button>
           </a>
         </td>
       )}

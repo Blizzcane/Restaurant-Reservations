@@ -71,7 +71,7 @@ function Search() {
           required
         />
 
-        <button className="m-1" type="submit" onClick={handleSubmit}>
+        <button className="btn btn-outline-primary m-1" type="submit" onClick={handleSubmit}>
           Find
         </button>
       </form>
