@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
-import { createReservation, editReservation, listReservations } from "../utils/api";
+import {
+  createReservation,
+  editReservation,
+  listReservations,
+} from "../utils/api";
 
 //this component is reused for editing reservations.
 
@@ -71,7 +75,7 @@ function NewReservation({ edit, reservations, loadDashboard }) {
   function handleSubmit(event) {
     event.preventDefault();
     const abortController = new AbortController();
- 
+
     formData.mobile_number = formatPhoneNumber(formData.mobile_number);
 
     const errorList = [];
@@ -183,70 +187,122 @@ function NewReservation({ edit, reservations, loadDashboard }) {
     <form>
       {displayErrors()}
       {displayApiErrors()}
-      <ErrorAlert error={(reservationsError.length > 0 ? reservationsError : null)} />
-      <label htmlFor="first_name">First Name:&nbsp;</label>
+      <ErrorAlert
+        error={reservationsError.length > 0 ? reservationsError : null}
+      />
 
-      <input
-        name="first_name"
-        id="first_name"
-        type="text"
-        onChange={handleChange} // will add this in soon!
-        value={formData.first_name} // this as well!
-        required // this will make the field non-nullable
-      />
-      <label htmlFor="last_name">Last Name:&nbsp;</label>
+      <div class="form-group row">
+        <label htmlFor="first_name" className="col-sm-2 col-form-label">
+          First Name
+        </label>
+        <div className="col-sm-10">
+          <input
+            name="first_name"
+            id="first_name"
+            type="text"
+            className="form-control"
+            onChange={handleChange} // will add this in soon!
+            value={formData.first_name} // this as well!
+            required // this will make the field non-nullable
+          />
+        </div>
+      </div>
 
-      <input
-        name="last_name"
-        id="last_name"
-        type="text"
-        onChange={handleChange} // will add this in soon!
-        value={formData.last_name} // this as well!
-        required // this will make the field non-nullable
-      />
-      <label htmlFor="mobile_number">Mobile Number:&nbsp;</label>
+      <div class="form-group row">
+        <label className="col-sm-2 col-form-label" htmlFor="last_name">
+          Last Name
+        </label>
+        <div className="col-sm-10">
+          <input
+            name="last_name"
+            id="last_name"
+            type="text"
+            className="form-control"
+            onChange={handleChange} // will add this in soon!
+            value={formData.last_name} // this as well!
+            required // this will make the field non-nullable
+          />
+        </div>
+      </div>
 
-      <input
-        name="mobile_number"
-        id="mobile_number"
-        type="text"
-        onChange={handleChange} // will add this in soon!
-        value={formData.mobile_number} // this as well!
-        required // this will make the field non-nullable
-      />
-      <label htmlFor="reservation_date">Reservation Date:&nbsp;</label>
-      <input
-        name="reservation_date"
-        id="reservation_date"
-        type="date"
-        onChange={handleChange} // will add this in soon!
-        value={formData.reservation_date} // this as well!
-        required // this will make the field non-nullable
-      />
-      <label htmlFor="reservation_time">Reservation Time:&nbsp;</label>
+      <div class="form-group row">
+        <label className="col-sm-2 col-form-label" htmlFor="mobile_number">
+          Mobile Number
+        </label>
+        <div className="col-sm-10">
+          <input
+            name="mobile_number"
+            id="mobile_number"
+            type="text"
+            className="form-control"
+            onChange={handleChange} // will add this in soon!
+            value={formData.mobile_number} // this as well!
+            required // this will make the field non-nullable
+          />
+        </div>
+      </div>
 
-      <input
-        name="reservation_time"
-        id="reservation_time"
-        type="time"
-        onChange={handleChange} // will add this in soon!
-        value={formData.reservation_time} // this as well!
-        required // this will make the field non-nullable
-      />
-      <label htmlFor="people">Party Size:&nbsp;</label>
+      <div class="form-group row">
+        <label className="col-sm-2 col-form-label" htmlFor="reservation_date">
+          Reservation Date
+        </label>
+        <div className="col-sm-10">
+          <input
+            name="reservation_date"
+            id="reservation_date"
+            type="date"
+            className="form-control"
+            onChange={handleChange} // will add this in soon!
+            value={formData.reservation_date} // this as well!
+            required // this will make the field non-nullable
+          />{" "}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label className="col-sm-2 col-form-label" htmlFor="reservation_time">
+          Reservation Time
+        </label>
+        <div className="col-sm-10">
+          <input
+            name="reservation_time"
+            id="reservation_time"
+            type="time"
+            className="form-control"
+            onChange={handleChange} // will add this in soon!
+            value={formData.reservation_time} // this as well!
+            required // this will make the field non-nullable
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label className="col-sm-2 col-form-label" htmlFor="people">
+          Party Size
+        </label>
+        <div className="col-sm-10">
+          <input
+            name="people"
+            id="people"
+            type="text"
+            className="form-control"
+            onChange={handleChange} // will add this in soon!
+            value={formData.people} // this as well!
+            required // this will make the field non-nullable
+          />
+        </div>
+      </div>
 
-      <input
-        name="people"
-        id="people"
-        type="text"
-        onChange={handleChange} // will add this in soon!
-        value={formData.people} // this as well!
-        required // this will make the field non-nullable
-      />
-      <button type="submit" onClick={handleSubmit}>
+      <button
+        className="btn btn-primary m-1"
+        type="submit"
+        onClick={handleSubmit}
+      >
         Submit
       </button>
-      <button type="button" onClick={history.goBack}>
+      <button
+        className="btn btn-danger m-1"
+        type="button"
+        onClick={history.goBack}
+      >
         Cancel
       </button>
     </form>
