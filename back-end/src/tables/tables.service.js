@@ -15,6 +15,13 @@ function read(reservation_id) {
       .first();
 }
 
+function readTable(table_id) {
+  return knex("tables")
+      .select("*")
+      .where({ table_id: table_id })
+      .first();
+}
+
 function seat(table_id, reservation_id) {
   // console.log("seating knex");
   console.log("service.seat:",table_id, reservation_id)
@@ -41,5 +48,6 @@ module.exports = {
   seat,
   updateReservation,
   read,
+  readTable,
   cleanTable
 };

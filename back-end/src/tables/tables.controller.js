@@ -47,7 +47,7 @@ async function validateTableId(req, res, next) {
   // console.log("checking Table ID validity");
 
   const { table_id } = req.params;
-  const table = await service.read(table_id);
+  const table = await service.readTable(table_id);
   // console.log("table", table);
 
   if (!table) {
@@ -138,6 +138,7 @@ async function validateData(req, res, next) {
 }
 
 async function validateSeatedTable(req, res, next) {
+  console.log("table status:",res.locals.table);
   if (res.locals.table.status !== "occupied") {
     return next({ status: 400, message: "this table is not occupied" });
   }
