@@ -27,7 +27,7 @@ function TableRow({ table, loadDashboard }) {
       <td data-table-id-status={table.table_id}>{table.status}</td>
       {table.status === "occupied" && (
         <td data-table-id-finish={table.table_id}>
-          <button onClick={handleFinish} type="button">
+          <button className="btn btn-outline-danger btn-sm" onClick={handleFinish} type="button">
             Finish
           </button>
         </td>

@@ -52,21 +52,21 @@ function Dashboard({
       <h1>Dashboard</h1><div className="btn-group m-1" role="group">
         <button
           type="button"
-          className="btn btn-secondary"
+          className="btn btn-outline-primary btn-sm"
           onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
         >
           Prev.
         </button>
         <button
           type="button"
-          className="btn btn-secondary"
+          className="btn btn-outline-primary btn-sm"
           onClick={() => history.push(`/dashboard?date=${today()}`)}
         >
           Today
         </button>
         <button
           type="button"
-          className="btn btn-secondary"
+          className="btn btn-outline-primary btn-sm"
           onClick={() => history.push(`/dashboard?date=${next(date)}`)}
         >
           Next

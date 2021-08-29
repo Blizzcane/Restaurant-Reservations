@@ -20,6 +20,7 @@ async function create(req, res) {
   const response = await service.create(req.body.data);
   res.status(201).json({ data: response[0] });
 }
+ 
 
 function validateBody(req, res, next) {
   if (!req.body.data) {
@@ -118,13 +119,7 @@ function validateDate(req, res, next) {
   next();
 }
 
-async function create(req, res) {
-	req.body.data.status = "booked";
 
-	const response = await service.create(req.body.data);
-
-	res.status(201).json({ data: response[0] });
-}
 
 async function validateReservationId(req, res, next) {
   const { reservation_id } = req.params;

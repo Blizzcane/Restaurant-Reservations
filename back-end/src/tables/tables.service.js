@@ -1,7 +1,7 @@
 const knex = require("../db/connection");
 
 function list() {
-  return knex("tables").select("*");
+  return knex("tables").select("*").orderBy("table_name", "asc");
 }
 
 function create(table) {
@@ -10,21 +10,18 @@ function create(table) {
 
 function read(reservation_id) {
   return knex("reservations")
-      .select("*")
-      .where({ reservation_id: reservation_id })
-      .first();
+    .select("*")
+    .where({ reservation_id: reservation_id })
+    .first();
 }
 
 function readTable(table_id) {
-  return knex("tables")
-      .select("*")
-      .where({ table_id: table_id })
-      .first();
+  return knex("tables").select("*").where({ table_id: table_id }).first();
 }
 
 function seat(table_id, reservation_id) {
   // console.log("seating knex");
-  console.log("service.seat:",table_id, reservation_id)
+  console.log("service.seat:", table_id, reservation_id);
   return knex("tables")
     .where({ table_id: table_id })
     .update({ reservation_id: reservation_id, status: "occupied" });
@@ -38,8 +35,8 @@ function updateReservation(reservation_id, status) {
 
 function cleanTable(table_id) {
   return knex("tables")
-      .where({ table_id: table_id })
-      .update({ reservation_id: null, status: "free" });
+    .where({ table_id: table_id })
+    .update({ reservation_id: null, status: "free" });
 }
 
 module.exports = {
@@ -49,5 +46,5 @@ module.exports = {
   updateReservation,
   read,
   readTable,
-  cleanTable
+  cleanTable,
 };

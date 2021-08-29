@@ -35,14 +35,14 @@ function ReservationRow({ reservation, loadDashboard  }) {
 
       <td>
         <a href={`/reservations/${reservation.reservation_id}/edit`}>
-          <button className="btn btn-outline-primary" type="button">Edit</button>
+          <button className="btn btn-outline-primary btn-sm" type="button">Edit</button>
         </a>
       </td>
 
       <td>
         <button
           type="button"
-          className="btn btn-outline-danger"
+          className="btn btn-outline-danger btn-sm"
           onClick={handleCancel}
           data-reservation-id-cancel={reservation.reservation_id}
         >
@@ -53,7 +53,7 @@ function ReservationRow({ reservation, loadDashboard  }) {
       {reservation.status === "booked" && (
         <td>
           <a href={`/reservations/${reservation.reservation_id}/seat`}>
-            <button type="button" className="btn btn-outline-success">Seat</button>
+            <button type="button" className="btn btn-outline-success btn-sm">Seat</button>
           </a>
         </td>
       )}
