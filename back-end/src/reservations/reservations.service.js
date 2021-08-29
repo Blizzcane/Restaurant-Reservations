@@ -5,8 +5,7 @@ function list(date, mobileNumber) {
     return knex("reservations").select("*").where({ reservation_date: date });
   }
 
-  if (mobileNumber) {
-    console.log(mobileNumber);
+  if (mobileNumber) { 
     return knex("reservations")
       .select("*")
 			.where('mobile_number', 'like', `${mobileNumber}%`);
