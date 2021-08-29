@@ -68,13 +68,14 @@ function NewReservation({ edit, reservations, loadDashboard }) {
     }
   }, [edit, reservation_id]);
 
-  function handleChange({ target }) {
+  function handleChange({ target }) { 
     setFormData({ ...formData, [target.name]: target.value });
   }
 
   function handleSubmit(event) {
     event.preventDefault();
     const abortController = new AbortController();
+
 
     formData.mobile_number = formatPhoneNumber(formData.mobile_number);
 
@@ -105,10 +106,24 @@ function NewReservation({ edit, reservations, loadDashboard }) {
 
   const formatPhoneNumber = (number) => {
     let phoneNumber = number.replace(/[^\d]/g, "");
-    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(
-      3,
-      6
-    )}-${phoneNumber.slice(6, 10)}`;
+    const phoneNumberLength = phoneNumber.length;
+
+  // we need to return the value with no formatting if its less then four digits
+  // this is to avoid weird behavior that occurs if you  format the area code to early
+  if (phoneNumberLength < 4) return phoneNumber;
+
+  // if phoneNumberLength is greater than 4 and less the 7 we start to return
+  // the formatted number
+  if (phoneNumberLength < 7) {
+    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+  }
+
+  // finally, if the phoneNumberLength is greater then seven, we add the last
+  // bit of formatting and return it.
+  return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(
+    3,
+    6
+  )}-${phoneNumber.slice(6, 10)}`;
   };
 
   //makes sure fields are not empty before submitting reservation
@@ -119,6 +134,13 @@ function NewReservation({ edit, reservations, loadDashboard }) {
           field.charAt(0).toUpperCase() + field.slice(1).split("_").join(" ");
         errorList.push({ message: `${fieldName} cannot be left blank.` });
       }
+    }
+
+    let phoneNumber = formData.mobile_number.replace(/[^\d]/g, "");
+    const phoneNumberLength = phoneNumber.length;
+
+    if(phoneNumberLength < 10){
+      errorList.push({ message: "Phone Number must be 10 digits" });
     }
 
     if (formData.people <= 0) {
