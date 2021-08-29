@@ -8,29 +8,29 @@ function Search() {
   const [reservations, setReservations] = useState([]);
   const [error, setError] = useState(null);
 
-  const formatPhoneNumber = (number) => {
-    let phoneNumber = number.replace(/[^\d]/g, "");
-    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(
-      3,
-      6
-    )}-${phoneNumber.slice(6, 10)}`;
-  };
+  // const formatPhoneNumber = (number) => {
+  //   let phoneNumber = number.replace(/[^\d]/g, "");
+  //   return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(
+  //     3,
+  //     6
+  //   )}-${phoneNumber.slice(6, 10)}`;
+  // };
 
   function handleChange({ target }) {
-    setMobileNumber(formatPhoneNumber(target.value));
+    setMobileNumber(target.value);
   }
 
-  const validateNumber = (number) => {
-    var re = /^\d{3}-\d{3}-\d{4}/g; 
+  // const validateNumber = (number) => {
+  //   var re = /^\d{3}-\d{3}-\d{4}/g; 
 
-    return re.test(number);
-  };
+  //   return re.test(number);
+  // };
 
   function handleSubmit(event) {
     event.preventDefault();
     const abortController = new AbortController();
     setError(null); 
-    if (validateNumber(mobileNumber)) { 
+    if (mobileNumber){ 
       listReservations({ mobile_number: mobileNumber }, abortController.signal)
         .then(setReservations)
         .catch(setError);

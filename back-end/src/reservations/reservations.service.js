@@ -6,10 +6,11 @@ function list(date, mobileNumber) {
   }
 
   if (mobileNumber) {
+    console.log(mobileNumber);
     return knex("reservations")
       .select("*")
-      .where({ mobile_number: mobileNumber });
-  }
+      .where({ mobile_number: mobileNumber }); 
+  } 
 
   return knex("reservations").select("*");
 }
