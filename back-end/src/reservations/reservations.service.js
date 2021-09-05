@@ -2,15 +2,18 @@ const knex = require("../db/connection");
 
 function list(date, mobileNumber) {
   if (date) {
-    return knex("reservations").select("*").where({ reservation_date: date });
-  }
-
-  if (mobileNumber) { 
     return knex("reservations")
       .select("*")
-			.where('mobile_number', 'like', `${mobileNumber}%`);
-  } 
+      .where({ reservation_date: date })
+      .orderBy("reservation_time", "asc");
+  }
 
+  if (mobileNumber) {
+    return knex("reservations")
+      .select("*")
+      .where("mobile_number", "like", `${mobileNumber}%`);
+  }
+  // console.log("service", mobileNumber, date);
   return knex("reservations").select("*");
 }
 

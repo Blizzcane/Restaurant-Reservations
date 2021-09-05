@@ -68,14 +68,13 @@ function NewReservation({ edit, reservations, loadDashboard }) {
     }
   }, [edit, reservation_id]);
 
-  function handleChange({ target }) { 
-    setFormData({ ...formData, [target.name]: target.value });
+  function handleChange({ target }) {
+		setFormData({ ...formData, [target.name]: target.name === "people" ? Number(target.value) : target.value });
   }
 
   function handleSubmit(event) {
     event.preventDefault();
     const abortController = new AbortController();
-
 
     formData.mobile_number = formatPhoneNumber(formData.mobile_number);
 
@@ -108,22 +107,22 @@ function NewReservation({ edit, reservations, loadDashboard }) {
     let phoneNumber = number.replace(/[^\d]/g, "");
     const phoneNumberLength = phoneNumber.length;
 
-  // we need to return the value with no formatting if its less then four digits
-  // this is to avoid weird behavior that occurs if you  format the area code to early
-  if (phoneNumberLength < 4) return phoneNumber;
+    // we need to return the value with no formatting if its less then four digits
+    // this is to avoid weird behavior that occurs if you  format the area code to early
+    if (phoneNumberLength < 4) return phoneNumber;
 
-  // if phoneNumberLength is greater than 4 and less the 7 we start to return
-  // the formatted number
-  if (phoneNumberLength < 7) {
-    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
-  }
+    // if phoneNumberLength is greater than 4 and less the 7 we start to return
+    // the formatted number
+    if (phoneNumberLength < 7) {
+      return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+    }
 
-  // finally, if the phoneNumberLength is greater then seven, we add the last
-  // bit of formatting and return it.
-  return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(
-    3,
-    6
-  )}-${phoneNumber.slice(6, 10)}`;
+    // finally, if the phoneNumberLength is greater then seven, we add the last
+    // bit of formatting and return it.
+    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(
+      3,
+      6
+    )}-${phoneNumber.slice(6, 10)}`;
   };
 
   //makes sure fields are not empty before submitting reservation
@@ -139,7 +138,7 @@ function NewReservation({ edit, reservations, loadDashboard }) {
     let phoneNumber = formData.mobile_number.replace(/[^\d]/g, "");
     const phoneNumberLength = phoneNumber.length;
 
-    if(phoneNumberLength < 10){
+    if (phoneNumberLength < 10) {
       errorList.push({ message: "Phone Number must be 10 digits" });
     }
 
@@ -223,9 +222,9 @@ function NewReservation({ edit, reservations, loadDashboard }) {
             id="first_name"
             type="text"
             className="form-control"
-            onChange={handleChange}  
-            value={formData.first_name}  
-            required  
+            onChange={handleChange}
+            value={formData.first_name}
+            required
           />
         </div>
       </div>

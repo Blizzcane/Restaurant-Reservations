@@ -6,21 +6,26 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
  */
 
 async function list(req, res) {
-  const date = req.query.date; 
-	const mobile_number = req.query.mobile_number; 
+  const date = req.query.date;
+  const mobile_number = req.query.mobile_number;
   // console.log("reservations controller list");
 
-  const response = await service.list(date, mobile_number);
+  const reservations = await service.list(date, mobile_number);
+  console.log("list",reservations, date, mobile_number);
+  const response = reservations.filter(
+    (reservation) => reservation.status !== "finished"
+  );
 
   res.json({ data: response });
 }
 
 async function create(req, res) {
   req.body.data.status = "booked";
+
   const response = await service.create(req.body.data);
+  // console.log("create", response);
   res.status(201).json({ data: response[0] });
 }
- 
 
 function validateBody(req, res, next) {
   if (!req.body.data) {
@@ -42,6 +47,10 @@ function validateBody(req, res, next) {
     }
   }
 
+  if (typeof req.body.data.people !== "number") {
+    return next({ status: 400, message: "'people' field must be a number" });
+  }
+
   if (
     Number.isNaN(
       Date.parse(
@@ -55,7 +64,6 @@ function validateBody(req, res, next) {
         "'reservation_date' or 'reservation_time' field is in an incorrect format",
     });
   }
-
 
   if (parseInt(req.body.data.people) < 1) {
     return next({ status: 400, message: "'people' field must be at least 1" });
@@ -119,14 +127,15 @@ function validateDate(req, res, next) {
   next();
 }
 
-
-
 async function validateReservationId(req, res, next) {
   const { reservation_id } = req.params;
   const reservation = await service.read(Number(reservation_id));
 
-  if(!reservation) {
-      return next({ status: 404, message: `reservation id ${reservation_id} does not exist` });
+  if (!reservation) {
+    return next({
+      status: 404,
+      message: `reservation id ${reservation_id} does not exist`,
+    });
   }
 
   res.locals.reservation = reservation;
@@ -135,50 +144,82 @@ async function validateReservationId(req, res, next) {
 }
 
 async function validateUpdateBody(req, res, next) {
-	if(!req.body.data.status) {
-		return next({ status: 400, message: "body must include a status field" });
-	}
+  if (!req.body.data.status) {
+    return next({ status: 400, message: "body must include a status field" });
+  }
 
-	if(req.body.data.status !== "booked" && req.body.data.status !== "seated" &&
-		req.body.data.status !== "finished" && req.body.data.status !== "cancelled") {
-		return next({ status: 400, message: `'status' field cannot be ${req.body.data.status}` });
-	}
+  if (
+    req.body.data.status !== "booked" &&
+    req.body.data.status !== "seated" &&
+    req.body.data.status !== "finished" &&
+    req.body.data.status !== "cancelled"
+  ) {
+    return next({
+      status: 400,
+      message: `'status' field cannot be ${req.body.data.status}`,
+    });
+  }
 
-	if(res.locals.reservation.status === "finished") {
-		return next({ status: 400, message: `a finished reservation cannot be updated` });
-	}
+  if (res.locals.reservation.status === "finished") {
+    return next({
+      status: 400,
+      message: `a finished reservation cannot be updated`,
+    });
+  }
 
-	next();
+  next();
 }
 
 async function update(req, res) {
-	await service.update(res.locals.reservation.reservation_id, req.body.data.status);
+  await service.update(
+    res.locals.reservation.reservation_id,
+    req.body.data.status
+  );
 
-	res.status(200).json({ data: { status: req.body.data.status } });
+  res.status(200).json({ data: { status: req.body.data.status } });
 }
 
 async function edit(req, res) {
-	const response = await service.edit(res.locals.reservation.reservation_id, req.body.data);
+  const response = await service.edit(
+    res.locals.reservation.reservation_id,
+    req.body.data
+  );
 
-	res.status(200).json({ data: response[0] });
+  res.status(200).json({ data: response[0] });
 }
 
 async function read(req, res) {
-	res.status(200).json({ data: res.locals.reservation });
+  res.status(200).json({ data: res.locals.reservation });
 }
 
 async function validateData(req, res, next) {
-	if(!req.body.data) {
-		return next({ status: 400, message: "Body must include a data object" });
-	}
+  if (!req.body.data) {
+    return next({ status: 400, message: "Body must include a data object" });
+  }
 
-	next();
+  next();
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
-	create: [asyncErrorBoundary(validateData), asyncErrorBoundary(validateBody), asyncErrorBoundary(validateDate), asyncErrorBoundary(create)],
-	update: [asyncErrorBoundary(validateData), asyncErrorBoundary(validateReservationId), asyncErrorBoundary(validateUpdateBody), asyncErrorBoundary(update)],
-	edit: [asyncErrorBoundary(validateData), asyncErrorBoundary(validateReservationId), asyncErrorBoundary(validateBody), asyncErrorBoundary(validateDate), asyncErrorBoundary(edit)],
-	read: [asyncErrorBoundary(validateReservationId), asyncErrorBoundary(read)],
+  create: [
+    asyncErrorBoundary(validateData),
+    asyncErrorBoundary(validateBody),
+    asyncErrorBoundary(validateDate),
+    asyncErrorBoundary(create),
+  ],
+  update: [
+    asyncErrorBoundary(validateData),
+    asyncErrorBoundary(validateReservationId),
+    asyncErrorBoundary(validateUpdateBody),
+    asyncErrorBoundary(update),
+  ],
+  edit: [
+    asyncErrorBoundary(validateData),
+    asyncErrorBoundary(validateReservationId),
+    asyncErrorBoundary(validateBody),
+    asyncErrorBoundary(validateDate),
+    asyncErrorBoundary(edit),
+  ],
+  read: [asyncErrorBoundary(validateReservationId), asyncErrorBoundary(read)],
 };
