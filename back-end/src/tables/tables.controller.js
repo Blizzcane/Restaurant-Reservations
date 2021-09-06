@@ -67,7 +67,9 @@ async function validateReservationId(req, res, next) {
   // console.log("checking reservation ID validity");
 
   const { reservation_id } = req.body.data;
+  console.log("res Id", reservation_id);
   const reservation = await service.read(Number(reservation_id));
+  console.log("reservation", reservation);
 
   if (!reservation_id) {
     return next({
@@ -155,7 +157,7 @@ async function destroy(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [validateBody, asyncErrorBoundary(create)],
+  create: [asyncErrorBoundary(validateData), asyncErrorBoundary(validateBody), asyncErrorBoundary(create)],
   update: [
     asyncErrorBoundary(validateData),
     asyncErrorBoundary(validateTableId),

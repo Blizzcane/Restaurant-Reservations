@@ -21,7 +21,7 @@ function readTable(table_id) {
 
 function seat(table_id, reservation_id) {
   // console.log("seating knex");
-  console.log("service.seat:", table_id, reservation_id);
+  // console.log("service.seat:", table_id, reservation_id);
   return knex("tables")
     .where({ table_id: table_id })
     .update({ reservation_id: reservation_id, status: "occupied" });
