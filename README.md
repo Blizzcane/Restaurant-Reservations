@@ -11,11 +11,11 @@ The software is used only by personnel at a fine dining restaurant when a custom
 ### Dashboard:
 ![Dashboard](./screenshots/dashboard.png)
 ### Create a new reservation:
-![reservation](./screenshots/create_reservation.PNG)
+![reservation](./screenshots/create_reservation.png)
 ### Create a new table:
-![table](./screenshots/create_table.PNG)
+![table](./screenshots/create_table.png)
 ### Search for customer by phone number:
- ![number](./screenshots/number_search.PNG)
+![number](./screenshots/number_search.png)
  
  ## Technology
  ### Built with:
