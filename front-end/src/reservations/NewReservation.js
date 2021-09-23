@@ -44,7 +44,9 @@ function NewReservation({ edit, reservations, loadDashboard }) {
         return <p>Only booked reservations can be edited.</p>;
       }
 
-      const date = new Date(foundReservation.reservation_date);
+      const date = new Date(foundReservation.reservation_date + ' 00:00');
+      // console.log(foundReservation.reservation_date + ' 00:00' ,date);
+
       const dateString = `${date.getFullYear()}-${(
         "0" +
         (date.getMonth() + 1)
@@ -69,7 +71,11 @@ function NewReservation({ edit, reservations, loadDashboard }) {
   }, [edit, reservation_id]);
 
   function handleChange({ target }) {
-		setFormData({ ...formData, [target.name]: target.name === "people" ? Number(target.value) : target.value });
+    setFormData({
+      ...formData,
+      [target.name]:
+        target.name === "people" ? Number(target.value) : target.value,
+    });
   }
 
   function handleSubmit(event) {
