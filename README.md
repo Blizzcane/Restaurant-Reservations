@@ -10,14 +10,20 @@ The software is used only by personnel at a fine dining restaurant when a custom
  
 ### Dashboard:
 ![Dashboard](./screenshots/dashboard.png)
-### Create New Deck:
-![NewDeck](./screenshots/CreateDeck.PNG)
-### View Deck:
-![ViewDeck](./screenshots/ViewDeck.PNG)
-### Study Deck:
- ![StudyDeck](./screenshots/Study.PNG)
+### Create a new reservation:
+![reservation](./screenshots/create_reservation.PNG)
+### Create a new table:
+![table](./screenshots/create_table.PNG)
+### Search for customer by phone number:
+ ![number](./screenshots/number_search.PNG)
  
  ## Technology
  ### Built with:
- - React using hooks such as useEffect and useState
- - created with create-react-app
+ - ReactJS   
+ - Node.js
+ - PostgreSQL
+ - Bootstrap
+ - Knex.js 
+ - Express.js 
+ - CORS
+
