@@ -17,7 +17,7 @@ Tables will have a 'finish' button once they are occupied so they can be cleared
 Reservations will be made on this page. Data field verification on the front and back end to prevent creation of an incomplete reservation.
 ### Create a new table:
 ![table](./screenshots/create_table.png) 
-New tables can be add here.
+New tables can be added here.
 ### Search for customer by phone number:
 ![number](./screenshots/number_search.png)
 Search for reservations by phone number.
