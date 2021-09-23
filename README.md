@@ -6,7 +6,7 @@ The software is used only by personnel at a fine dining restaurant when a custom
  ## Links
  - [Deployment](https://restaurant-reservations-sigma.vercel.app/) 
  
- ## Screenshots
+ ## Project Screenshots
  
 ### Dashboard:
 ![Dashboard](./screenshots/dashboard.png)
